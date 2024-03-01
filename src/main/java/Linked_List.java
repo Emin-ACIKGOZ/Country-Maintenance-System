@@ -38,13 +38,20 @@ public class Linked_List {
         }
 
         // Method to get the next node
-        public Node getNext() {
+        protected Node getNext() {
             return next;
         }
 
         // Method to get the previous node
-        public Node getPrev() {
+        protected Node getPrev() {
             return prev;
+        }
+
+        protected void setNext(Node next){
+            this.next = next;
+        }
+        protected void setPrev(Node prev){
+            this.prev = prev;
         }
     }
 
@@ -113,7 +120,7 @@ public class Linked_List {
         //check queryType
         //queryType = queryType.toLowerCase();
         if (!isValid(queryType) || (sign != '<' && sign != '=' && sign != '>')) {
-            System.out.println("Invalid query entered.");
+            System.out.println("Invalid query entered");
             return;
         }
         if (queryType.equals("population")) {
@@ -203,6 +210,28 @@ public class Linked_List {
         }
     }
 
+    public void delete(String countryName) {
+        Node curr = head;
+        while (curr != null) {
+            if (curr.countryName.equalsIgnoreCase(countryName)) {
+                if (curr.getPrev() == null) {
+                    head = curr.getNext();
+                } else {
+                    curr.getPrev().setNext(curr.getNext());
+                }
+                if (curr.getNext() == null) {
+                    tail = curr.getPrev();
+                } else {
+                    curr.getNext().setPrev(curr.getPrev());
+                }
+                size--;
+                System.out.println("Deleted: " + curr.countryName);
+                return;
+            }
+            curr = curr.next;
+        }
+        System.out.println("Country " + countryName + " not found");
+    }
 
 
     public static void main(String[] args) {
@@ -240,6 +269,9 @@ public class Linked_List {
                 char sign = queryParts[2].charAt(0);
                 String value = queryParts[3];
                 countryMaintenanceSystem.query(queryType, sign, value);
+            } else if(inputType.equalsIgnoreCase("Delete")){
+                String country = queryParts[1];
+                countryMaintenanceSystem.delete(country);
             }
         }
         scanner.close();
