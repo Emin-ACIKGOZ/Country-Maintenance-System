@@ -47,10 +47,11 @@ public class Linked_List {
             return prev;
         }
 
-        protected void setNext(Node next){
+        protected void setNext(Node next) {
             this.next = next;
         }
-        protected void setPrev(Node prev){
+
+        protected void setPrev(Node prev) {
             this.prev = prev;
         }
     }
@@ -117,8 +118,8 @@ public class Linked_List {
     }
 
     public void query(String queryType, char sign, String value) {
-        //check queryType
-        //queryType = queryType.toLowerCase();
+
+        queryType = queryType.toLowerCase();
         if (!isValid(queryType) || (sign != '<' && sign != '=' && sign != '>')) {
             System.out.println("Invalid query entered");
             return;
@@ -134,7 +135,7 @@ public class Linked_List {
                 curr = curr.getNext();
             }
             if (!flag) {
-                System.out.println("There was no element with a population " + sign + " " + value);
+                System.out.println("There was no element that satisfied the condition: population " + sign + " " + value);
             }
         } else {
             Node curr = head;
@@ -211,41 +212,60 @@ public class Linked_List {
     }
 
     public void delete(String countryName) {
+        if (head == null) {
+            System.out.println("List is empty");
+            return;
+        }
+
         Node curr = head;
         while (curr != null) {
             if (curr.countryName.equalsIgnoreCase(countryName)) {
-                if (curr.getPrev() == null) {
+                if (curr == head) {
                     head = curr.getNext();
+                    if (head == null) {
+                        tail = null; // List is now empty
+                    } else {
+                        head.setPrev(null);
+                    }
+                } else if (curr == tail) {
+                    tail = curr.getPrev();
+                    tail.setNext(null);
                 } else {
                     curr.getPrev().setNext(curr.getNext());
-                }
-                if (curr.getNext() == null) {
-                    tail = curr.getPrev();
-                } else {
                     curr.getNext().setPrev(curr.getPrev());
                 }
                 size--;
                 System.out.println("Deleted: " + curr.countryName);
                 return;
             }
-            curr = curr.next;
+            curr = curr.getNext();
         }
-        System.out.println("Country " + countryName + " not found");
+        System.out.println("Country: " + countryName + " not found");
+    }
+
+
+    public void printAll() {
+        Node curr = head;
+        while (curr != null) {
+            System.out.println(curr.toString());
+            curr = curr.getNext();
+        }
     }
 
 
     public static void main(String[] args) {
-        Linked_List countryMaintenanceSystem = new Linked_List();
+        Linked_List CMS = new Linked_List();
 
         // Manually add some initial countries
-        countryMaintenanceSystem.append("TURKIYE", 85000000, "Ankara", "Istanbul", "Turkish", "TRY");
-        countryMaintenanceSystem.append("GERMANY", 84000000, "Berlin", "Berlin", "German", "EUR");
-        countryMaintenanceSystem.append("USA", 335000000, "Washington", "NewYork", "English", "USD");
+        CMS.append("TURKIYE", 85000000, "Ankara", "Istanbul", "Turkish", "TRY");
+        CMS.append("GERMANY", 84000000, "Berlin", "Berlin", "German", "EUR");
+        CMS.append("USA", 335000000, "Washington", "NewYork", "English", "USD");
 
         Scanner scanner = new Scanner(System.in);
         String input;
         System.out.println("Enter your queries (type 'exit' to quit):");
         while (true) {
+            //CMS.printAll();
             input = scanner.nextLine();
             if (input.equalsIgnoreCase("exit")) {
                 break;
@@ -260,7 +280,7 @@ public class Linked_List {
                 String largestCity = queryParts[4];
                 String officialLanguage = queryParts[5];
                 String currency = queryParts[6];
-                countryMaintenanceSystem.prepend(countryName, population, capitalCity, largestCity, officialLanguage, currency);
+                CMS.prepend(countryName, population, capitalCity, largestCity, officialLanguage, currency);
                 System.out.println("A new country has been added.");
             } else if (inputType.equalsIgnoreCase("Query")) {
                 // Perform a query
@@ -268,10 +288,10 @@ public class Linked_List {
                 String queryType = queryParts[1];
                 char sign = queryParts[2].charAt(0);
                 String value = queryParts[3];
-                countryMaintenanceSystem.query(queryType, sign, value);
-            } else if(inputType.equalsIgnoreCase("Delete")){
+                CMS.query(queryType, sign, value);
+            } else if (inputType.equalsIgnoreCase("Delete")) {
                 String country = queryParts[1];
-                countryMaintenanceSystem.delete(country);
+                CMS.delete(country);
             }
         }
         scanner.close();
