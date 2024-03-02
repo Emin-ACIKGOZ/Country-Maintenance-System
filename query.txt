@@ -1,22 +1,19 @@
-Query population > 100.000.000
+ADD USA 335.000.000 Washington NewYork English USD
+query print_all
+Query population > 1.000.000.000
 Query country > BRAZIL
-Query capital_city < Moscow
-Query largest_city = Tokyo
-Query country = CANADA
-Query official_language = English
-Query currency = EUR
-Add SWEDEN 10.000.000 Stockholm Stockholm Swedish SEK
-Delete MEXICO
-Query print_all
-Query currency < EUR
-Query print_all
-Add GERMANY 83.000.000 Berlin Berlin German EUR
-Query population > 50.000.000
-Query country > ITALY
-Query capital_city < Abuja
-Query largest_city = Johannesburg
-Query country = INDIA
+Query capital_city < SaoPaulo
+Query largest_city = NewYork
+Query country = CHINA
 Query official_language = Hindi
-Query currency = INR
-Delete SOUTH_AFRICA
+Query currency = USD
+Query print_all
+Query favorite_color = blue
+Query country = TURKEY
+Query print_all
+Query population < 1000
+Query capital_city = Ankara
+Query print_all
+Query country = RUSSIA
+Query currency = RUB
 Query print_all

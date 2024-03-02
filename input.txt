@@ -1,20 +1,5 @@
 TURKEY 82.000.000 Ankara Istanbul Turkish TRY
 RUSSIA 144.000.000 Moscow Moscow Russian RUB
 BRAZIL 212.000.000 Brasilia SaoPaulo Portuguese BRL
-CHINA 1.400.000.000 Beijing Shanghai Mandarin CNY
 INDIA 1.300.000.000 NewDelhi Mumbai Hindi INR
-UNITED_KINGDOM 68.000.000 London London English GBP
-FRANCE 67.000.000 Paris Paris French EUR
-JAPAN 126.000.000 Tokyo Tokyo Japanese JPY
-GERMANY 83.000.000 Berlin Berlin German EUR
-CANADA 37.000.000 Ottawa Toronto English, French CAD
-AUSTRALIA 25.000.000 Canberra Sydney English AUD
-SOUTH_KOREA 51.000.000 Seoul Seoul Korean KRW
-ITALY 60.000.000 Rome Rome Italian EUR
-SPAIN 47.000.000 Madrid Madrid Spanish EUR
-MEXICO 129.000.000 MexicoCity MexicoCity Spanish MXN
-ARGENTINA 45.000.000 BuenosAires BuenosAires Spanish ARS
-SAUDI_ARABIA 34.000.000 Riyadh Riyadh Arabic SAR
-EGYPT 102.000.000 Cairo Cairo Arabic, English EGP
-NIGERIA 206.000.000 Abuja Lagos English NGN
-SOUTH_AFRICA 60.000.000 Pretoria Johannesburg Zulu, Xhosa, English ZAR
+CHINA 1.400.000.000 Beijing Shanghai       Mandarin CNY

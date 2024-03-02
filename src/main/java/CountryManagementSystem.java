@@ -1,92 +1,124 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class CountryManagementSystem {
-    private Linked_List cms;
+    private LinkedList list;
+
+    private String[] formatLine(String line) {
+        line = line.trim().toLowerCase().replaceAll("\\s+", " ");
+        String[] data = line.split(" ");
+        return data;
+    }
+
+    private void processInputLine(String line) {
+        String[] data = formatLine(line);
+
+        if (data.length != 6) {
+            System.out.println("Error: incorrect input.");
+            return;
+        }
+
+        if (Long.parseLong(data[1].replaceAll("\\.", "")) <= 0) {
+            System.out.println("Error: invalid population size.");
+            return;
+        }
+
+        list.add(data);
+    }
 
     public void loadInput() {
-        cms = new Linked_List();
-        try {
-            File file = new File("input.txt");
-            if (!file.exists()) {
-                file.createNewFile();
-                System.out.println("Input file created.");
-            }
-            Scanner reader = new Scanner(file);
+        list = new LinkedList();
+        File inputFile = new File("input.txt");
+
+        try (Scanner reader = new Scanner(inputFile)) {
             while (reader.hasNextLine()) {
-                String[] data = reader.nextLine().strip().split(" ");
-                if (data.length != 6) {
-                    System.out.println("Incorrect input");
-                    continue;
-                }
-                if (Long.parseLong(data[1].replaceAll("\\.", "")) <= 0) {
-                    System.out.println("Invalid population size");
-                    continue;
-                }
-                cms.append(data[0], Long.parseLong(data[1].replaceAll("\\.", "")), data[2], data[3], data[4], data[5]);
+                String line = reader.nextLine();
+                processInputLine(line);
             }
-            reader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.out.println("An error occurred while creating the input file.");
+            System.out.println("Error: File not found.");
             e.printStackTrace();
         }
     }
 
     public void processQueries() {
-        try {
-            File file = new File("query.txt");
-            if (!file.exists()) {
-                file.createNewFile();
-                System.out.println("Query file created.");
-            }
-            Scanner reader = new Scanner(file);
-            while (reader.hasNextLine()) {
-                String[] data = reader.nextLine().strip().split(" ");
-                if (data.length < 2) {
-                    System.out.println("Invalid query: query has malformed input");
-                    continue;
-                }
-                if (data[0].equalsIgnoreCase("Query")) {
-                    if (data[1].equalsIgnoreCase("print_all")) {
-                        cms.printAll();
-                    } else {
-                        if (data.length != 4) {
-                            System.out.println("Invalid query type: query has incorrect input");
-                            continue;
-                        }
-                        cms.query(data[1], data[2].charAt(0), data[3]);
-                    }
+        File file = new File("query.txt");
 
-                } else if (data[0].equalsIgnoreCase("Delete")) {
-                    if (data.length != 2) {
-                        System.out.println("Unable to delete due to malformed delete query");
-                        continue;
-                    }
-                    cms.delete(data[1]);
-                } else if (data[0].equalsIgnoreCase("Add")) {
-                    if (data.length != 7 || Long.parseLong(data[2].replaceAll("\\.", "")) <= 0) {
-                        System.out.println("Unable to add due to malformed Add query");
-                        continue;
-                    }
-                    cms.prepend(data[1], Long.parseLong(data[2].replaceAll("\\.", "")), data[3], data[4], data[5], data[6]);
-                }
+        try (Scanner reader = new Scanner(file)) {
+            while (reader.hasNextLine()) {
+                String line = reader.nextLine();
+                processQueryLine(line);
             }
-            reader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.out.println("An error occurred while creating the query file.");
+            System.out.println("Error: File not found.");
             e.printStackTrace();
         }
     }
 
-    public void createInputFilesIfNeeded() {
+    private void processQueryLine(String line) {
+        String[] data = formatLine(line);
+
+        if (data.length < 2) {
+            System.out.println("Error: query is missing parameters.");
+            return;
+        }
+
+        String queryType = data[0].toLowerCase();
+        switch (queryType) {
+            case "query" -> processQuery(data);
+            case "delete" -> processDelete(data);
+            case "add" -> processAdd(data);
+            default -> System.out.println("Invalid query type: " + queryType);
+        }
+
+        System.out.println("-----------------------------------------------------------------");
+    }
+
+    private void processQuery(String[] data) {
+        if (data.length != 4 && data.length != 2) {
+            System.out.println("Error: query has invalid parameters.");
+            return;
+        }
+
+        String queryType = data[1];
+        if (queryType.equalsIgnoreCase("print_all")) {
+            list.printAll();
+        } else if (data.length == 4) {
+            String sign = data[2];
+            if (sign.length() != 1) {
+                System.out.println("Error: invalid sign.");
+                return;
+            }
+
+            list.query(queryType, sign.charAt(0), data[3]);
+        } else {
+            System.out.println("Error: query has invalid parameters.");
+        }
+    }
+
+    private void processDelete(String[] data) {
+        if (data.length != 2) {
+            System.out.println("Error: unable to delete due to invalid input format.");
+            return;
+        }
+
+        list.delete(data[1]);
+    }
+
+    private void processAdd(String[] data) {
+        if (data.length != 7 || Long.parseLong(data[2].replaceAll("\\.", "")) <= 0) {
+            System.out.println("Error: unable to add element due to invalid input format.");
+            return;
+        }
+
+        list.add(Arrays.copyOfRange(data, 1, data.length));
+    }
+
+
+    public void checkFiles() {
         try {
             File inputFile = new File("input.txt");
             File queryFile = new File("query.txt");
@@ -102,16 +134,16 @@ public class CountryManagementSystem {
             }
 
             if (inputFile.exists() && queryFile.exists()) {
-                System.out.println("Both input and query files already exist.");
+                System.out.println("Info: input and query files were found.");
             }
         } catch (IOException e) {
-            System.out.println("An error occurred while creating input and query files.");
+            System.out.println("Error: an IO exception has occurred.");
             e.printStackTrace();
         }
     }
 
     public void process() {
-        createInputFilesIfNeeded();
+        checkFiles();
         loadInput();
         processQueries();
     }

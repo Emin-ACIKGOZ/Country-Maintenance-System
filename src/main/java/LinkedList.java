@@ -1,6 +1,4 @@
-import java.util.Scanner;
-
-public class Linked_List {
+public class LinkedList {
 
     public static class Node {
         protected Node next;
@@ -61,7 +59,7 @@ public class Linked_List {
     protected Node tail;
     int size = 0;
 
-    public Linked_List() {
+    public LinkedList() {
         this.head = null;
         this.tail = null;
         this.size = 0;
@@ -108,7 +106,6 @@ public class Linked_List {
             return false;
         }
 
-
         return queryType.equals("country") ||
                 queryType.equals("population") ||
                 queryType.equals("capital_city") ||
@@ -121,14 +118,14 @@ public class Linked_List {
 
         queryType = queryType.toLowerCase();
         if (!isValid(queryType) || (sign != '<' && sign != '=' && sign != '>')) {
-            System.out.println("Invalid query entered");
+            System.out.println("Error: invalid query.");
             return;
         }
         if (queryType.equals("population")) {
             Node curr = head;
             boolean flag = false;
             while (curr != null) {
-                if (evaluate(curr, Long.parseLong(value), sign)) {
+                if (evaluate(curr, Long.parseLong(value.replaceAll("\\.", "")), sign)) {
                     System.out.println(curr.toString());
                     flag = true;
                 }
@@ -155,6 +152,7 @@ public class Linked_List {
 
     private boolean evaluate(Node node, long population, char sign) {
         if (sign != '<' && sign != '=' && sign != '>') {
+            System.out.println("Error: invalid sign entered.");
             return false;
         }
         switch (sign) {
@@ -182,7 +180,7 @@ public class Linked_List {
             case "capital_city" -> evaluate(node.capitalCity, value, sign);
             case "currency" -> evaluate(node.currency, value, sign);
             case "country" -> evaluate(node.countryName, value, sign);
-            case "official_Language" -> evaluate(node.officialLanguage, value, sign);
+            case "official_language" -> evaluate(node.officialLanguage, value, sign);
             case "largest_city" -> evaluate(node.largestCity, value, sign);
             default -> false;
         };
@@ -197,13 +195,13 @@ public class Linked_List {
 
         switch (sign) {
             case '<' -> {
-                return comparisonResult < 0;
+                return comparisonResult < 0 && !nodeVal.equalsIgnoreCase(val);
             }
             case '>' -> {
-                return comparisonResult > 0;
+                return comparisonResult > 0 && !nodeVal.equalsIgnoreCase(val);
             }
             case '=' -> {
-                return comparisonResult == 0;
+                return nodeVal.equalsIgnoreCase(val);
             }
             default -> {
                 return false;
@@ -211,9 +209,29 @@ public class Linked_List {
         }
     }
 
+    private String capitalize(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+        return Character.toUpperCase(str.charAt(0)) + str.substring(1);
+    }
+
+    public void add(String[] data) {
+        if (data == null) {
+            System.out.println("Error: invalid formatted string: " + data.toString());
+            return;
+        } else if (data.length != 6) {
+            System.out.println("Error: incorrect number of elements in the formatted string: " + data.toString());
+            return;
+        }
+
+        long population = Long.parseLong(data[1].replaceAll("\\.", ""));
+        append(data[0].toUpperCase(), population, capitalize(data[2]), capitalize(data[3]), capitalize(data[4]), data[5].toUpperCase());
+    }
+
     public void delete(String countryName) {
         if (head == null) {
-            System.out.println("List is empty");
+            System.out.println("Error: list is empty.");
             return;
         }
 
@@ -228,8 +246,12 @@ public class Linked_List {
                         head.setPrev(null);
                     }
                 } else if (curr == tail) {
-                    tail = curr.getPrev();
-                    tail.setNext(null);
+                    if (tail.getPrev() == null) {
+                        head = null; // Only one node in the list
+                    } else {
+                        tail = curr.getPrev();
+                        tail.setNext(null);
+                    }
                 } else {
                     curr.getPrev().setNext(curr.getNext());
                     curr.getNext().setPrev(curr.getPrev());
@@ -240,9 +262,8 @@ public class Linked_List {
             }
             curr = curr.getNext();
         }
-        System.out.println("Country: " + countryName + " not found");
+        System.out.println("Error: Country '" + countryName + "' not found");
     }
-
 
     public void printAll() {
         Node curr = head;
@@ -250,51 +271,6 @@ public class Linked_List {
             System.out.println(curr.toString());
             curr = curr.getNext();
         }
-    }
-
-
-    public static void main(String[] args) {
-        Linked_List CMS = new Linked_List();
-
-        // Manually add some initial countries
-        CMS.append("TURKIYE", 85000000, "Ankara", "Istanbul", "Turkish", "TRY");
-        CMS.append("GERMANY", 84000000, "Berlin", "Berlin", "German", "EUR");
-        CMS.append("USA", 335000000, "Washington", "NewYork", "English", "USD");
-
-        Scanner scanner = new Scanner(System.in);
-        String input;
-        System.out.println("Enter your queries (type 'exit' to quit):");
-        while (true) {
-            //CMS.printAll();
-            input = scanner.nextLine();
-            if (input.equalsIgnoreCase("exit")) {
-                break;
-            }
-            String[] queryParts = input.split(" ");
-            String inputType = queryParts[0];
-            if (inputType.equalsIgnoreCase("Add")) {
-                // Add a country
-                String countryName = queryParts[1];
-                long population = Long.parseLong(queryParts[2].replace(".", ""));
-                String capitalCity = queryParts[3];
-                String largestCity = queryParts[4];
-                String officialLanguage = queryParts[5];
-                String currency = queryParts[6];
-                CMS.prepend(countryName, population, capitalCity, largestCity, officialLanguage, currency);
-                System.out.println("A new country has been added.");
-            } else if (inputType.equalsIgnoreCase("Query")) {
-                // Perform a query
-                //Query country > HUNGARY
-                String queryType = queryParts[1];
-                char sign = queryParts[2].charAt(0);
-                String value = queryParts[3];
-                CMS.query(queryType, sign, value);
-            } else if (inputType.equalsIgnoreCase("Delete")) {
-                String country = queryParts[1];
-                CMS.delete(country);
-            }
-        }
-        scanner.close();
     }
 
 }
