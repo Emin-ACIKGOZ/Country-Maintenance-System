@@ -35,8 +35,8 @@ public class CountryManagementSystem {
         }
 
         long population = Long.parseLong(data[1].replaceAll("\\.", ""));
-        list.prepend(data[0].toUpperCase(), population, data[2], data[3], data[4], data[5].toUpperCase());    }
-
+        list.prepend(data[0].toUpperCase(), population, data[2], data[3], data[4], data[5].toUpperCase());
+    }
 
     public void loadInput() {
         list = new LinkedList();
@@ -51,38 +51,6 @@ public class CountryManagementSystem {
             System.out.println("Error: File not found.");
             e.printStackTrace();
         }
-    }
-
-    public void processQueries() {
-        File file = new File("query.txt");
-
-        try (Scanner reader = new Scanner(file)) {
-            while (reader.hasNextLine()) {
-                String line = reader.nextLine();
-                processQueryLine(line);
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("Error: File not found.");
-            e.printStackTrace();
-        }
-    }
-
-    private void processQueryLine(String line) {
-        String[] data = formatLine(line);
-
-        if (data.length < 2) {
-            System.out.println("Error: query is missing parameters.");
-        }else{
-            String queryType = data[0].toLowerCase();
-            switch (queryType) {
-                case "query" -> processQuery(data);
-                case "delete" -> processDelete(data);
-                case "add" -> processAdd(data);
-                default -> System.out.println("Invalid query type: " + queryType);
-            }
-        }
-
-        System.out.println("");
     }
 
     private void processQuery(String[] data) {
@@ -125,8 +93,39 @@ public class CountryManagementSystem {
         list.add(Arrays.copyOfRange(data, 1, data.length));
     }
 
+    private void processQueryLine(String line) {
+        String[] data = formatLine(line);
 
-    public void checkFiles() {
+        if (data.length < 2) {
+            System.out.println("Error: query is missing parameters.");
+        } else {
+            String queryType = data[0].toLowerCase();
+            switch (queryType) {
+                case "query" -> processQuery(data);
+                case "delete" -> processDelete(data);
+                case "add" -> processAdd(data);
+                default -> System.out.println("Invalid query type: " + queryType);
+            }
+        }
+
+        System.out.println("");
+    }
+
+    public void processQueries() {
+        File file = new File("query.txt");
+
+        try (Scanner reader = new Scanner(file)) {
+            while (reader.hasNextLine()) {
+                String line = reader.nextLine();
+                processQueryLine(line);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: File not found.");
+            e.printStackTrace();
+        }
+    }
+
+    private void checkFiles() {
         try {
             File inputFile = new File("input.txt");
             File queryFile = new File("query.txt");

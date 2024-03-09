@@ -72,6 +72,13 @@ public class LinkedList {
         return size == 0;
     }
 
+    private String capitalize(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+        return Character.toUpperCase(str.charAt(0)) + str.substring(1).toLowerCase();
+    }
+
     public void prepend(String countryName, long population, String capitalCity, String largestCity, String officialLanguage, String currency) {
         if (population < 0) {
             System.out.println("Error: invalid population size.");
@@ -106,18 +113,6 @@ public class LinkedList {
             tail = newTail;
             this.size++;
         }
-    }
-
-    private boolean isValidPopulation(long population) {
-        return population > 0;
-    }
-
-
-    private String capitalize(String str) {
-        if (str == null || str.isEmpty()) {
-            return str;
-        }
-        return Character.toUpperCase(str.charAt(0)) + str.substring(1).toLowerCase();
     }
 
     private boolean isValid(String queryType) {
@@ -228,6 +223,17 @@ public class LinkedList {
         }
     }
 
+    private boolean countryExists(String countryName) {
+        Node curr = head;
+        while (curr != null) {
+            if (curr.countryName.equalsIgnoreCase(countryName)) {
+                return true;
+            }
+            curr = curr.getNext();
+        }
+        return false;
+    }
+
     public void add(String[] data) {
         if (data == null) {
             System.out.println("Error: invalid formatted string: " + data.toString());
@@ -253,18 +259,6 @@ public class LinkedList {
         }
 
     }
-
-    private boolean countryExists(String countryName) {
-        Node curr = head;
-        while (curr != null) {
-            if (curr.countryName.equalsIgnoreCase(countryName)) {
-                return true;
-            }
-            curr = curr.getNext();
-        }
-        return false;
-    }
-
 
     public void delete(String countryName) {
         if (head == null) {
