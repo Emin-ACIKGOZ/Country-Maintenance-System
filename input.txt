@@ -1,5 +1,7 @@
-TURKEY 82.000.000 Ankara Istanbul Turkish TRY
-RUSSIA 144.000.000 Moscow Moscow Russian RUB
-BRAZIL 212.000.000 Brasilia SaoPaulo Portuguese BRL
-INDIA 1.300.000.000 NewDelhi Mumbai Hindi INR
-CHINA 1.400.000.000 Beijing Shanghai       Mandarin CNY
+TURKIYE 85.000.000 Ankara Istanbul Turkish TRY
+GERMANY 84.000.000 Berlin Berlin German EUR
+USA 335.000.000 Washington NewYork English USD
+USA 335.000.000 Washington NewYork English USD
+USssA 3c35.000.000 Wasshington NewYsork Ensglish USD
+sqsq sdw wd wd wd w d
+x x x x xx

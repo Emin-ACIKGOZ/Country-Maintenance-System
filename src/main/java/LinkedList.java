@@ -54,7 +54,6 @@ public class LinkedList {
         }
     }
 
-
     protected Node head;
     protected Node tail;
     int size = 0;
@@ -74,7 +73,11 @@ public class LinkedList {
     }
 
     public void prepend(String countryName, long population, String capitalCity, String largestCity, String officialLanguage, String currency) {
-        Node newHead = new Node(countryName, population, capitalCity, largestCity, officialLanguage, currency);
+        if (population < 0) {
+            System.out.println("Error: invalid population size.");
+            return;
+        }
+        Node newHead = new Node(countryName.toUpperCase(), population, capitalize(capitalCity), capitalize(largestCity), capitalize(officialLanguage), currency.toUpperCase());
         if (head == null) {
             this.head = newHead;
             this.tail = newHead;
@@ -88,7 +91,11 @@ public class LinkedList {
     }
 
     public void append(String countryName, long population, String capitalCity, String largestCity, String officialLanguage, String currency) {
-        Node newTail = new Node(countryName, population, capitalCity, largestCity, officialLanguage, currency);
+        if (population < 0) {
+            System.out.println("Error: invalid population size.");
+            return;
+        }
+        Node newTail = new Node(countryName.toUpperCase(), population, capitalize(capitalCity), capitalize(largestCity), capitalize(officialLanguage), currency.toUpperCase());
         if (tail == null) {
             this.tail = newTail;
             this.head = newTail;
@@ -99,6 +106,18 @@ public class LinkedList {
             tail = newTail;
             this.size++;
         }
+    }
+
+    private boolean isValidPopulation(long population) {
+        return population > 0;
+    }
+
+
+    private String capitalize(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+        return Character.toUpperCase(str.charAt(0)) + str.substring(1).toLowerCase();
     }
 
     private boolean isValid(String queryType) {
@@ -209,13 +228,6 @@ public class LinkedList {
         }
     }
 
-    private String capitalize(String str) {
-        if (str == null || str.isEmpty()) {
-            return str;
-        }
-        return Character.toUpperCase(str.charAt(0)) + str.substring(1);
-    }
-
     public void add(String[] data) {
         if (data == null) {
             System.out.println("Error: invalid formatted string: " + data.toString());
@@ -225,9 +237,34 @@ public class LinkedList {
             return;
         }
 
-        long population = Long.parseLong(data[1].replaceAll("\\.", ""));
-        append(data[0].toUpperCase(), population, capitalize(data[2]), capitalize(data[3]), capitalize(data[4]), data[5].toUpperCase());
+        String countryName = data[0].toUpperCase();
+        if (countryExists(countryName)) {
+            System.out.println("Error: Country '" + countryName + "' already exists.");
+            return;
+        }
+
+        try {
+            long population = Long.parseLong(data[1].replaceAll("\\.", ""));
+            append(countryName, population, data[2], data[3], data[4], data[5]);
+            System.out.println("A new country has been added.");
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Unable to parse population value as long: " + data[1]);
+            return;
+        }
+
     }
+
+    private boolean countryExists(String countryName) {
+        Node curr = head;
+        while (curr != null) {
+            if (curr.countryName.equalsIgnoreCase(countryName)) {
+                return true;
+            }
+            curr = curr.getNext();
+        }
+        return false;
+    }
+
 
     public void delete(String countryName) {
         if (head == null) {
@@ -262,10 +299,14 @@ public class LinkedList {
             }
             curr = curr.getNext();
         }
-        System.out.println("Error: Country '" + countryName + "' not found");
+        System.out.println("Error: country '" + countryName + "' not found.");
     }
 
     public void printAll() {
+        if (isEmpty()) {
+            System.out.println("Error: failed to print as list is empty.");
+            return;
+        }
         Node curr = head;
         while (curr != null) {
             System.out.println(curr.toString());

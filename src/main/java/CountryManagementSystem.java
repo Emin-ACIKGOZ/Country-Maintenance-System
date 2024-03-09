@@ -9,25 +9,34 @@ public class CountryManagementSystem {
 
     private String[] formatLine(String line) {
         line = line.trim().toLowerCase().replaceAll("\\s+", " ");
-        String[] data = line.split(" ");
-        return data;
+        return line.split(" ");
+    }
+
+    private boolean isValidPopulation(String populationStr) {
+        try {
+            long population = Long.parseLong(populationStr.replaceAll("\\.", ""));
+            return population > 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     private void processInputLine(String line) {
         String[] data = formatLine(line);
 
         if (data.length != 6) {
-            System.out.println("Error: incorrect input.");
+            System.out.println("Error: incorrect input.\n");
             return;
         }
 
-        if (Long.parseLong(data[1].replaceAll("\\.", "")) <= 0) {
-            System.out.println("Error: invalid population size.");
+        if (!isValidPopulation(data[1])) {
+            System.out.println("Error: invalid population size.\n");
             return;
         }
 
-        list.add(data);
-    }
+        long population = Long.parseLong(data[1].replaceAll("\\.", ""));
+        list.prepend(data[0].toUpperCase(), population, data[2], data[3], data[4], data[5].toUpperCase());    }
+
 
     public void loadInput() {
         list = new LinkedList();
@@ -63,18 +72,17 @@ public class CountryManagementSystem {
 
         if (data.length < 2) {
             System.out.println("Error: query is missing parameters.");
-            return;
+        }else{
+            String queryType = data[0].toLowerCase();
+            switch (queryType) {
+                case "query" -> processQuery(data);
+                case "delete" -> processDelete(data);
+                case "add" -> processAdd(data);
+                default -> System.out.println("Invalid query type: " + queryType);
+            }
         }
 
-        String queryType = data[0].toLowerCase();
-        switch (queryType) {
-            case "query" -> processQuery(data);
-            case "delete" -> processDelete(data);
-            case "add" -> processAdd(data);
-            default -> System.out.println("Invalid query type: " + queryType);
-        }
-
-        System.out.println("-----------------------------------------------------------------");
+        System.out.println("");
     }
 
     private void processQuery(String[] data) {
@@ -109,8 +117,8 @@ public class CountryManagementSystem {
     }
 
     private void processAdd(String[] data) {
-        if (data.length != 7 || Long.parseLong(data[2].replaceAll("\\.", "")) <= 0) {
-            System.out.println("Error: unable to add element due to invalid input format.");
+        if (data.length != 7 || !isValidPopulation(data[2])) {
+            System.out.println("Error: unable to add element due to invalid input format or non-positive population.");
             return;
         }
 
@@ -133,9 +141,6 @@ public class CountryManagementSystem {
                 System.out.println("Query file created.");
             }
 
-            if (inputFile.exists() && queryFile.exists()) {
-                System.out.println("Info: input and query files were found.");
-            }
         } catch (IOException e) {
             System.out.println("Error: an IO exception has occurred.");
             e.printStackTrace();
@@ -151,6 +156,7 @@ public class CountryManagementSystem {
     public static void main(String[] args) {
         CountryManagementSystem countryManagementSystem = new CountryManagementSystem();
         countryManagementSystem.process();
+
     }
 }
 

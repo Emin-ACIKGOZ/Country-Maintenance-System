@@ -1,19 +1,68 @@
-ADD USA 335.000.000 Washington NewYork English USD
-query print_all
-Query population > 1.000.000.000
-Query country > BRAZIL
-Query capital_city < SaoPaulo
-Query largest_city = NewYork
-Query country = CHINA
-Query official_language = Hindi
-Query currency = USD
+invalid text
+query PrInt_ALl
+delete UsA
+delete GeRMANY
+ delete FRANCE
+delete TuRKIYE
+ delete FRANCE
+ delete INDIA
+QUERY priNt_aLL
+QueRy delEte NONEXISTENT
+Query populaTion > 50.000.000
+QUERY COUnTRY > HUNGARY
+query CAPItaL_CITY < CAnakKale
+QueRy largest_citY = Istanbul
+Query cOunTry = USA
+Add BUlGARIA 6.500.000 Sofia Sofia Bulgarian LEV
+ADD CAnADA 37.000.000 Ottawa Ottawa English CAD
+ADd FRaNCE 67.000.000 Paris Paris French EUR
+add INDIA 100000000 NewDelhi NewDelhi Hindi INR
+Query priNt_all
+QueRy cUrrency < notInSystem
+Query    population > 50.000.000
+QUERY COUNTRY > HUNGARY
+query CAPITAL_CITY < CAnakKale
+QUERY PRINT_ALL
+querry print_all
+Query nonexistent_query < something
+Query nonexistent_query = something
+Query nonexistent_query > something
+Query
+Add USA 335.000.000 Washington NewYork English USD
+Add USA 5.000.000 Moskow StalinGrad Russian USSR
+Delete ITALY
+Add CANADA 37.000.000 Ottawa Ottawa English CAD
+Delete USA
+Add FRANCE 67.000.000 Paris Paris French EUR
 Query print_all
-Query favorite_color = blue
-Query country = TURKEY
+Query population > 0
+Query population < 0
+Query population = 100000000
+Query capital_city > XYZ
+Query largest_city < <
+Query largest_city < =
+Query largest_city < >
+Query country = USA
+Query country >= USA
+Query deleTe USA
+Query add INDIA 100000000 NewDelhi NewDelhi Hindi INR
+Query delete TURKIYE
 Query print_all
-Query population < 1000
-Query capital_city = Ankara
+Query delete USA
 Query print_all
-Query country = RUSSIA
-Query currency = RUB
-Query print_all
+Query delete NONEXISTENT
+
+>
+=
+<
+Query > y
+query < y
+query = x
+query
+querrY add
+add delete USA
+delete >
+a > a AAA AAA
+QUERY X >= X
+Add Negative -6.50.000 Efiat Efiat Bian Neg
+add badParse -6.b town town2 lang cur
