@@ -1,5 +1,8 @@
 public class LinkedList {
 
+    /**
+     * Inner class that is a node within the list that represents a country
+     */
     public static class Node {
         protected Node next;
         protected Node prev;
@@ -10,6 +13,16 @@ public class LinkedList {
         protected String officialLanguage;
         protected String currency;
 
+        /**
+         * Constructs a new node with the following data fields.
+         *
+         * @param countryName      The name of the country.
+         * @param population       The population of the country.
+         * @param capitalCity      The capital city of the country.
+         * @param largestCity      The largest city of the country.
+         * @param officialLanguage The official language of the country.
+         * @param currency         The currency of the country.
+         */
         public Node(String countryName, long population, String capitalCity,
                     String largestCity, String officialLanguage, String currency) {
             this.countryName = countryName;
@@ -20,6 +33,12 @@ public class LinkedList {
             this.currency = currency;
         }
 
+        /**
+         * An unused copy constructor that copies the data fields of an existing node
+         * without copying its links
+         *
+         * @param node The Node to be copied.
+         */
         public Node(Node node) {
             this.countryName = node.countryName;
             this.population = node.population;
@@ -29,26 +48,49 @@ public class LinkedList {
             this.currency = node.currency;
         }
 
+        /**
+         * Returns the data of the node in string form.
+         *
+         * @return A string that represents the node.
+         */
         @Override
         public String toString() {
             return countryName + " " + population + " " + capitalCity + " " + largestCity + " " +
                     officialLanguage + " " + currency;
         }
 
-        // Method to get the next node
+        /**
+         * Returns the next node after the specified node.
+         *
+         * @return The node after this node.
+         */
         protected Node getNext() {
             return next;
         }
 
-        // Method to get the previous node
+        /**
+         * Returns the previous node that precedes the specified node.
+         *
+         * @return The node before this node.
+         */
         protected Node getPrev() {
             return prev;
         }
 
+        /**
+         * Sets the next node of the specified node.
+         *
+         * @param next The node to be set as next.
+         */
         protected void setNext(Node next) {
             this.next = next;
         }
 
+        /**
+         * Sets the previous node of the specified node.
+         *
+         * @param prev The node to be set as prev.
+         */
         protected void setPrev(Node prev) {
             this.prev = prev;
         }
@@ -58,20 +100,39 @@ public class LinkedList {
     protected Node tail;
     int size = 0;
 
+    /**
+     * Constructs an empty LinkedList.
+     */
     public LinkedList() {
         this.head = null;
         this.tail = null;
         this.size = 0;
     }
 
+    /**
+     * Returns the size of the linked list.
+     *
+     * @return The size of the linked list.
+     */
     public int getSize() {
         return size;
     }
 
+    /**
+     * Checks if the linked list is empty.
+     *
+     * @return True if the linked list is empty, false otherwise.
+     */
     public boolean isEmpty() {
         return size == 0;
     }
 
+    /**
+     * Capitalizes the first letter of a string.
+     *
+     * @param str The string to be capitalized.
+     * @return The capitalized string.
+     */
     private String capitalize(String str) {
         if (str == null || str.isEmpty()) {
             return str;
@@ -79,6 +140,16 @@ public class LinkedList {
         return Character.toUpperCase(str.charAt(0)) + str.substring(1).toLowerCase();
     }
 
+    /**
+     * Prepends a node with the provided information to the list.
+     *
+     * @param countryName      The name of the country.
+     * @param population       The population of the country.
+     * @param capitalCity      The capital city of the country.
+     * @param largestCity      The largest city of the country.
+     * @param officialLanguage The official language of the country.
+     * @param currency         The currency of the country.
+     */
     public void prepend(String countryName, long population, String capitalCity, String largestCity, String officialLanguage, String currency) {
         if (population < 0) {
             System.out.println("Error: invalid population size.");
@@ -97,6 +168,16 @@ public class LinkedList {
         }
     }
 
+    /**
+     * Appends a node with the provided information to the list.
+     *
+     * @param countryName      The name of the country.
+     * @param population       The population of the country.
+     * @param capitalCity      The capital city of the country.
+     * @param largestCity      The largest city of the country.
+     * @param officialLanguage The official language of the country.
+     * @param currency         The currency of the country.
+     */
     public void append(String countryName, long population, String capitalCity, String largestCity, String officialLanguage, String currency) {
         if (population < 0) {
             System.out.println("Error: invalid population size.");
@@ -115,6 +196,12 @@ public class LinkedList {
         }
     }
 
+    /**
+     * Checks if the queryType string is a valid query type.
+     *
+     * @param queryType The query type to be validated.
+     * @return True if the query type is valid, false otherwise.
+     */
     private boolean isValid(String queryType) {
         if (queryType == null) {
             return false;
@@ -128,8 +215,14 @@ public class LinkedList {
                 queryType.equals("currency");
     }
 
+    /**
+     * Performs a query on the linked list based on the provided queryType.
+     *
+     * @param queryType The type of query (e.g., population, country, capital_city).
+     * @param sign      The comparison sign (>, <, =).
+     * @param value     The value to compare against.
+     */
     public void query(String queryType, char sign, String value) {
-
         queryType = queryType.toLowerCase();
         if (!isValid(queryType) || (sign != '<' && sign != '=' && sign != '>')) {
             System.out.println("Error: invalid query.");
@@ -164,6 +257,15 @@ public class LinkedList {
         }
     }
 
+
+    /**
+     * Evaluates if the population of a node satisfies the given condition.
+     *
+     * @param node       The node containing population information.
+     * @param population The population value to compare against.
+     * @param sign       The comparison sign (>, <, =).
+     * @return True if the population satisfies the condition, false otherwise.
+     */
     private boolean evaluate(Node node, long population, char sign) {
         if (sign != '<' && sign != '=' && sign != '>') {
             System.out.println("Error: invalid sign entered.");
@@ -185,6 +287,15 @@ public class LinkedList {
         }
     }
 
+    /**
+     * Evaluates if the specified attribute of a node satisfies the given condition.
+     *
+     * @param node       The node containing attribute information.
+     * @param queryType  The type of attribute to be evaluated (e.g., capital_city, currency).
+     * @param value      The value to compare against.
+     * @param sign       The comparison sign (>, <, =).
+     * @return True if the attribute satisfies the given condition, false otherwise.
+     */
     private boolean evaluate(Node node, String queryType, String value, char sign) {
         if (sign != '<' && sign != '=' && sign != '>') {
             return false;
@@ -200,6 +311,14 @@ public class LinkedList {
         };
     }
 
+    /**
+     * Evaluates if the specified string value satisfies the given condition.
+     *
+     * @param nodeVal The string value to be evaluated.
+     * @param val     The value to compare against.
+     * @param sign    The comparison sign (>, <, =).
+     * @return True if the string value satisfies the condition, false otherwise.
+     */
     private boolean evaluate(String nodeVal, String val, char sign) {
         if (sign != '<' && sign != '=' && sign != '>') {
             return false;
@@ -223,6 +342,13 @@ public class LinkedList {
         }
     }
 
+
+    /**
+     * Checks if a country with the provided name already exists in the linked list.
+     *
+     * @param countryName The name of the country to check for existence.
+     * @return True if the country exists, false otherwise.
+     */
     private boolean countryExists(String countryName) {
         Node curr = head;
         while (curr != null) {
@@ -234,6 +360,12 @@ public class LinkedList {
         return false;
     }
 
+    /**
+     * Adds a new node to the linked list if it is valid
+     * and does not already exist within the list.
+     *
+     * @param data A string array that contains the data of the new node.
+     */
     public void add(String[] data) {
         if (data == null) {
             System.out.println("Error: invalid formatted string: " + data.toString());
@@ -257,9 +389,15 @@ public class LinkedList {
             System.out.println("Error: Unable to parse population value as long: " + data[1]);
             return;
         }
-
     }
 
+
+    /**
+     * Deletes a node with the specified country name
+     * from the linked list if it exists within the list.
+     *
+     * @param countryName The name of the country to delete.
+     */
     public void delete(String countryName) {
         if (head == null) {
             System.out.println("Error: list is empty.");
@@ -296,6 +434,9 @@ public class LinkedList {
         System.out.println("Error: country '" + countryName + "' not found.");
     }
 
+    /**
+     * Prints all nodes in the linked list.
+     */
     public void printAll() {
         if (isEmpty()) {
             System.out.println("Error: failed to print as list is empty.");
@@ -307,5 +448,6 @@ public class LinkedList {
             curr = curr.getNext();
         }
     }
+
 
 }

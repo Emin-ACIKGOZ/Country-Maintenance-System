@@ -5,13 +5,30 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class CountryManagementSystem {
+    /**
+     * This is the doubly linked list that our system uses to handle countries.
+     */
     private LinkedList list;
 
+    /**
+     * Formats a line by removing extra whitespaces and making all letters lowercase
+     * in order to reduce the risk of invalid data being entered or edge cases.
+     *
+     * @param line This is the input line to be formatted.
+     * @return A string array representing the data the line contains.
+     */
     private String[] formatLine(String line) {
         line = line.trim().toLowerCase().replaceAll("\\s+", " ");
         return line.split(" ");
     }
 
+    /**
+     * Returns true if the population string
+     * can be properly parsed into a non-negative long
+     *
+     * @param populationStr This is the population string.
+     * @return true if the population string is valid, false otherwise.
+     */
     private boolean isValidPopulation(String populationStr) {
         try {
             long population = Long.parseLong(populationStr.replaceAll("\\.", ""));
@@ -21,6 +38,12 @@ public class CountryManagementSystem {
         }
     }
 
+    /**
+     * Formats a line from the input file
+     * and adds it to the doubly linked list if it is valid.
+     *
+     * @param line The input line to be processed.
+     */
     private void processInputLine(String line) {
         String[] data = formatLine(line);
 
@@ -38,6 +61,9 @@ public class CountryManagementSystem {
         list.prepend(data[0].toUpperCase(), population, data[2], data[3], data[4], data[5].toUpperCase());
     }
 
+    /**
+     * Loads input from the input file and processes each line.
+     */
     public void loadInput() {
         list = new LinkedList();
         File inputFile = new File("input.txt");
@@ -53,6 +79,11 @@ public class CountryManagementSystem {
         }
     }
 
+    /**
+     * Handles queries where a search will be performed.
+     *
+     * @param data A string array containing one line of data from the query line.
+     */
     private void processQuery(String[] data) {
         if (data.length != 4 && data.length != 2) {
             System.out.println("Error: query has invalid parameters.");
@@ -75,6 +106,11 @@ public class CountryManagementSystem {
         }
     }
 
+    /**
+     * Deletes a country if the provided data is correct.
+     *
+     * @param data A string array containing one line of data from the query line.
+     */
     private void processDelete(String[] data) {
         if (data.length != 2) {
             System.out.println("Error: unable to delete due to invalid input format.");
@@ -84,6 +120,11 @@ public class CountryManagementSystem {
         list.delete(data[1]);
     }
 
+    /**
+     * Adds a country to the doubly linked list if it is valid.
+     *
+     * @param data A string array containing one line of data from the query line.
+     */
     private void processAdd(String[] data) {
         if (data.length != 7 || !isValidPopulation(data[2])) {
             System.out.println("Error: unable to add element due to invalid input format or non-positive population.");
@@ -93,6 +134,12 @@ public class CountryManagementSystem {
         list.add(Arrays.copyOfRange(data, 1, data.length));
     }
 
+    /**
+     * This method processes the query line
+     * and calls the corresponding method based on its keyword
+     *
+     * @param line This is the query line to be processed.
+     */
     private void processQueryLine(String line) {
         String[] data = formatLine(line);
 
@@ -111,6 +158,9 @@ public class CountryManagementSystem {
         System.out.println("");
     }
 
+    /**
+     * This method reads each line of the query file and handles each line accordingly
+     */
     public void processQueries() {
         File file = new File("query.txt");
 
@@ -125,6 +175,9 @@ public class CountryManagementSystem {
         }
     }
 
+    /**
+     * This method checks if the input and output files exist and creates them if they do not exist.
+     */
     private void checkFiles() {
         try {
             File inputFile = new File("input.txt");
@@ -146,6 +199,10 @@ public class CountryManagementSystem {
         }
     }
 
+    /**
+     * This method is to be called in main
+     * it loads the input and output files then processes them
+     */
     public void process() {
         checkFiles();
         loadInput();
